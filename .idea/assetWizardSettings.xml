@@ -34,11 +34,9 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="backgroundLayerName" value="ic_launcher_background_screen" />
                                       <entry key="foregroundImage" value="$PROJECT_DIR$/app/src/main/res/drawable/ic_letter_j.xml" />
-                                      <entry key="foregroundLayerName" value="ic_launcher_foreground_screen" />
                                       <entry key="legacyIconShape" value="CIRCLE" />
-                                      <entry key="outputName" value="ic_launch_screen" />
+                                      <entry key="outputName" value="ic_app_icon" />
                                     </map>
                                   </option>
                                 </PersistentState>
