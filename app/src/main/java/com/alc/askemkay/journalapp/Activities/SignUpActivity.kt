@@ -1,4 +1,4 @@
-package com.alc.askemkay.journalapp
+package com.alc.askemkay.journalapp.Activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
+import com.alc.askemkay.journalapp.R
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.android.synthetic.main.app_bar_main.*

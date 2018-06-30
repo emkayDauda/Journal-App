@@ -29,4 +29,19 @@
     <string name="web_client_id">264764416785-tno5ndhluua80miocbvu22r6b9vb9l3k.apps.googleusercontent.com</string>
     <string name="enter_password_again">Enter Password Again</string>
     <string name="sign_in_with_google">Or Sign In With Google</string>
+    <string name="empty_journal">Drat! Looks like your journal is empty at the moment. Let\'s fix that!!</string>
+    <string name="emotion_tv" translatable="true">Right now, I\'m:</string>
+
+    <string-array name="emotions_array">
+        <item>Angry</item>
+        <item> Sad</item>
+        <item>Happy</item>
+        <item>Elated</item>
+        <item>Depressed</item>
+        <item>Anxious</item>
+        <item>Crazy</item>
+        <item>Betrayed</item>
+        <item>WTF</item>
+    </string-array>
+
 </resources>

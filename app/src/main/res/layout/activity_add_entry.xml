@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.AddEntryActivity">
+
+    <android.support.design.widget.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/new_entry_edit_text"
+        android:background="@null"
+        android:gravity="top|start"
+        android:inputType="textMultiLine"
+        android:overScrollMode="always"
+        android:scrollbarStyle="insideInset"
+        android:scrollbars="vertical"
+        android:lines="6"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:scrollHorizontally="false" />
+
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/entry_done_fab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/ic_check_black_24dp" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/edit_entry_fab"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_edit_black_24dp" />
+
+    <TextView
+        app:layout_constraintTop_toBottomOf="@id/new_entry_edit_text"
+        app:layout_constraintLeft_toLeftOf="@id/new_entry_edit_text"
+        android:layout_width="wrap_content"
+        android:id="@+id/emotion_text_view"
+        android:layout_marginTop="12dp"
+        android:layout_height="wrap_content"
+        android:text="@string/emotion_tv"/>
+
+    <Spinner
+        android:id="@+id/emotionSpinner"
+        android:gravity="center"
+        app:layout_constraintLeft_toRightOf="@id/emotion_text_view"
+        app:layout_constraintBaseline_toBaselineOf="@id/emotion_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="99dp"
+        tools:layout_editor_absoluteY="144dp"/>
+
+
+</android.support.constraint.ConstraintLayout>

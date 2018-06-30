@@ -1,4 +1,4 @@
-package com.alc.askemkay.journalapp
+package com.alc.askemkay.journalapp.Activities
 
 //import android.support.test.orchestrator.junit.BundleJUnitUtils.getResult
 import android.content.Intent
@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
+import com.alc.askemkay.journalapp.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient

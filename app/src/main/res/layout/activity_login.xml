@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:id="@+id/loginConstraintLayout"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".Activities.LoginActivity">
 
     <ProgressBar
         android:layout_width="match_parent"
