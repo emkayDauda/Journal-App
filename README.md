@@ -8,6 +8,10 @@ Sunday, 24th June, 2018 to Sunday, 1st July, 2018
 A journal app where users can write down what they're thinking.
 Automatically grabs date and time of thought. Saves journal entries into a Room Database.
 
+Journal entries may be viewed and edited on click and may be deleted on long click.
+
+Persists data on Firebase when user requests it. Users may also choose to
+import their firebase data.
 
 ### Prerequisites
 
