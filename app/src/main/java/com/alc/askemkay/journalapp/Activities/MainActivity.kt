@@ -25,8 +25,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import android.content.Intent
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.alc.askemkay.journalapp.models.RecyclerViewClickListenerInterface
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.journal_entry.view.*
@@ -45,6 +47,7 @@ class MainActivity : AppCompatActivity(),
     private lateinit var userDisplayName: TextView
     private lateinit var userEmail: TextView
     private lateinit var recyclerView: RecyclerView
+    private lateinit var mProgressBar: ProgressBar
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
 
@@ -101,6 +104,8 @@ class MainActivity : AppCompatActivity(),
         val headerView = findViewById<NavigationView>(R.id.nav_view).getHeaderView(0)
         userDisplayName = headerView.findViewById(R.id.user_display_name_tv)
         userEmail = headerView.findViewById(R.id.user_email_tv)
+
+        mProgressBar = findViewById(R.id.progressBar)
 
         if (intent.hasExtra("displayName")){
             if (intent.getStringExtra("displayName").isNotEmpty()){
@@ -216,10 +221,23 @@ class MainActivity : AppCompatActivity(),
                         mDatabaseReference.child(userEmail.text.toString())
 
                 if (allEntries != null) {
+                    val childToEntryMap = mutableMapOf<String, JournalEntryModel>()
                     for (entry in allEntries){
-                        userFirebaseReference.child(entry.SN!!.toString()).setValue(entry)
-                        toast("Data backup request executed.")
+//                        userFirebaseReference.child(entry.SN!!.toString()).setValue(entry)
+                        childToEntryMap.put(entry.SN!!.toString(), entry)
                     }
+                    mProgressBar.visibility = View.VISIBLE
+                    userFirebaseReference.updateChildren(childToEntryMap as Map<String, Any>,
+                            object : DatabaseReference.CompletionListener {
+                        override fun onComplete(p0: DatabaseError?, p1: DatabaseReference) {
+                            mProgressBar.visibility = View.GONE
+                            if (p0 == null){
+                                toast("Export complete")
+                            } else toast("An error occurred: ${p0.message}")
+                        }
+
+                    })
+
                 }
             }
 
