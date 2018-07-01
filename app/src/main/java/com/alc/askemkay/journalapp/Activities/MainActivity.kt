@@ -150,11 +150,9 @@ class MainActivity : AppCompatActivity(),
         if (requestCode == NEW_ENTRY_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val entry = (data?.getParcelableExtra(AddEntryActivity.EXTRA_REPLY))
                     as JournalEntryModel
-            toast("new entry req")
             viewModel.insert(entry)
         } else if (requestCode == EDIT_ENTRY_ACTIVITY_REQUEST_CODE
                 && resultCode == Activity.RESULT_OK){
-            toast("edit entry req")
             val entry = (data?.getParcelableExtra(AddEntryActivity.EXTRA_REPLY))
                     as JournalEntryModel
 
@@ -170,6 +168,13 @@ class MainActivity : AppCompatActivity(),
         else {
             longToast("No entry was saved.")
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        userEmail.text = mAuth.currentUser?.email ?: "Unidentified User"
+        userDisplayName.text = mAuth.currentUser?.displayName ?: "Unidentified Name"
     }
 
     override fun onClick(v: View, position: Int) {
@@ -214,9 +219,9 @@ class MainActivity : AppCompatActivity(),
 
             R.id.sync_firebase -> {
                 val allEntries = viewModel.allEntries.value
-                toast("Size: ${allEntries?.size}")
+                val reference = userEmail.text.toString().filter { it != '.' }
                 val userFirebaseReference =
-                        mDatabaseReference.child(userEmail.text.toString())
+                        mDatabaseReference.child(reference).ref
 
                 if (allEntries != null) {
                     val childToEntryMap = mutableMapOf<String, JournalEntryModel>()
@@ -246,7 +251,9 @@ class MainActivity : AppCompatActivity(),
 
                     positiveButton("OK"){
                         mProgressBar.visibility = View.VISIBLE
-                        mDatabaseReference.addListenerForSingleValueEvent(object: ValueEventListener{
+                        val referenceEndpoint = userEmail.text.toString().filter { it != '.' }
+                        val reference = mDatabaseReference.child(referenceEndpoint).ref
+                        reference.addListenerForSingleValueEvent(object: ValueEventListener{
                             override fun onCancelled(p0: DatabaseError) {
                                 mProgressBar.visibility = View.GONE
                             }
