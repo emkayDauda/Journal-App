@@ -50,6 +50,8 @@ class MainActivity : AppCompatActivity(),
         const val NEW_ENTRY_ACTIVITY_REQUEST_CODE = 1
         const val EDIT_ENTRY_ACTIVITY_REQUEST_CODE = 1
 
+        const val SERIAL_NUMBER_EXTRA = "serialNumber"
+
         const val JOURNAL_ENTRY_EXTRA = "journalEntry"
 
         const val ENTRY_EMOTION_EXTRA = "entryEmotion"
@@ -69,7 +71,7 @@ class MainActivity : AppCompatActivity(),
 
         viewModel = ViewModelProviders.of(this).get(JournalViewModel(application)::class.java)
 
-        viewModel.getAllWords().observe(this, Observer<List<JournalEntryModel>> {
+        viewModel.getAllEntries().observe(this, Observer<List<JournalEntryModel>> {
             if (it != null) {
                 (viewAdapter as JournalAdapter).setWords(it)
             } else toast("Null data")
@@ -124,7 +126,12 @@ class MainActivity : AppCompatActivity(),
             viewModel.insert(entry)
         } else if (requestCode == EDIT_ENTRY_ACTIVITY_REQUEST_CODE
                 && resultCode == Activity.RESULT_OK){
+            val entry = (data?.getParcelableExtra(AddEntryActivity.EXTRA_REPLY))
+                    as JournalEntryModel
 
+            val oldSerialNumber = entry.SN!!.toString()
+            viewModel.deleteEntry(oldSerialNumber)
+            viewModel.insert(entry)
         }
 
         else {
@@ -135,8 +142,10 @@ class MainActivity : AppCompatActivity(),
     override fun onClick(v: View, position: Int) {
         val journalEntry = v.entry.text.toString()
         val entryEmotion = v.emotion.text.toString()
+        val serialNumber= v.sn_text_view.text.toString()
         val editEntryIntent = Intent(this@MainActivity, AddEntryActivity::class.java)
         editEntryIntent.putExtra(JOURNAL_ENTRY_EXTRA, journalEntry)
+        editEntryIntent.putExtra(SERIAL_NUMBER_EXTRA, serialNumber)
         editEntryIntent.putExtra(ENTRY_EMOTION_EXTRA, entryEmotion)
 
         startActivityForResult(editEntryIntent, EDIT_ENTRY_ACTIVITY_REQUEST_CODE)

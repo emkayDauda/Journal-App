@@ -34,10 +34,11 @@ RecyclerView.Adapter<JournalAdapter.ViewHolder>(){
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        holder.view.date_text_view.text = mEntries?.get(position)?.date.toString()
+        holder.view.date_text_view.text = mEntries?.get(position)?.date
         holder.view.time_text_view.text = mEntries?.get(position)?.time
         holder.view.entry.text = mEntries?.get(position)?.entry
         holder.view.emotion.text = mEntries?.get(position)?.emotion
+        holder.view.sn_text_view.text = mEntries?.get(position)?.SN?.toString()
     }
 
     //    Extend A view here?

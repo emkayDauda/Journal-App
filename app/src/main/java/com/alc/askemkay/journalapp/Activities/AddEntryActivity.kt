@@ -10,8 +10,10 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.TextView
 import com.alc.askemkay.journalapp.R
 import com.alc.askemkay.journalapp.models.JournalEntryModel
+import org.jetbrains.anko.toast
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,9 +27,12 @@ class AddEntryActivity : AppCompatActivity() {
 
 
     private lateinit var newEntryEditText: TextInputEditText
+    private lateinit var previousSerialNumber: TextView
     private lateinit var emotionsSpinner: Spinner
     private lateinit var entryCompleteFab: FloatingActionButton
     private lateinit var editEntryFab: FloatingActionButton
+
+    private var oldJournalEntryString = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_entry)
@@ -36,7 +41,11 @@ class AddEntryActivity : AppCompatActivity() {
 
         emotionsSpinner = findViewById(R.id.emotionSpinner)
 
+        previousSerialNumber = findViewById(R.id.sn_entry_already_exists)
 
+        if (intent.hasExtra(MainActivity.SERIAL_NUMBER_EXTRA)){
+            previousSerialNumber.text = intent.getStringExtra(MainActivity.SERIAL_NUMBER_EXTRA)
+        }
 
         val spinnerAdapter = ArrayAdapter.createFromResource(this@AddEntryActivity,
                 R.array.emotions_array, android.R.layout.simple_spinner_item)
@@ -61,12 +70,18 @@ class AddEntryActivity : AppCompatActivity() {
 
             val journalEntry = JournalEntryModel(null, currentDate, currentTime, entryBody, currentEmotion)
 
+            if (!previousSerialNumber.text.toString().isEmpty()){
+
+            }
             val replyIntent = Intent()
             if (TextUtils.isEmpty(newEntryEditText.text)) {
                 setResult(Activity.RESULT_CANCELED, replyIntent)
             } else {
                 replyIntent.putExtra(EXTRA_REPLY, journalEntry)
-                setResult(Activity.RESULT_OK, replyIntent)
+                if (oldJournalEntryString == journalEntry.entry) {
+                    setResult(Activity.RESULT_CANCELED, replyIntent)
+                }
+                else setResult(Activity.RESULT_OK, replyIntent)
             }
             finish()
         }
@@ -79,6 +94,7 @@ class AddEntryActivity : AppCompatActivity() {
         if (intent.hasExtra(MainActivity.JOURNAL_ENTRY_EXTRA) &&
                 intent.hasExtra(MainActivity.ENTRY_EMOTION_EXTRA)){
             newEntryEditText.setText(intent.getStringExtra(MainActivity.JOURNAL_ENTRY_EXTRA))
+            oldJournalEntryString = newEntryEditText.text.toString()
             newEntryEditText.isEnabled = false
             toggleFabs()
 

@@ -17,4 +17,7 @@ interface EntryDao {
 
     @Query("Select * FROM entry_table order by sn")
     fun getAllEntries(): LiveData<List<JournalEntryModel>>
+
+    @Query("Delete FROM entry_table WHERE sn = :id")
+    fun deleteEntry(id: String)
 }

@@ -25,5 +25,13 @@ open class JournalViewModel(application: Application) : AndroidViewModel(applica
         mRepository.insertEntry(entry)
     }
 
-    fun getAllWords() = allEntries
+    fun getAllEntries() = allEntries
+
+    fun deleteEntry(id: String){
+        mRepository.deleteEntry(id)
+    }
+
+    fun deleteEverything(){
+        mRepository.deleteEverything()
+    }
 }
