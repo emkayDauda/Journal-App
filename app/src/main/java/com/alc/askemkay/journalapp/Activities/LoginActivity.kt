@@ -106,10 +106,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     // Google Sign In was successful, authenticate with Firebase
                     val account = task.getResult(ApiException::class.java)
                     firebaseAuthWithGoogle(account)
-                    alert {
-                        val toDisplay = account.displayName ?: account.email
-                        message = "User: $toDisplay"
-                    }.show()
                 } catch (e: ApiException) {
                     // Google Sign In failed, update UI appropriately
                     Log.w(TAG, "Google sign in failed", e)

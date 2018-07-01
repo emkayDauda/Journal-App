@@ -210,7 +210,17 @@ class MainActivity : AppCompatActivity(),
         when (item.itemId) {
 
             R.id.sync_firebase -> {
-                toast("Yet to be implemented")
+                val allEntries = viewModel.allEntries.value
+                toast("Size: ${allEntries?.size}")
+                val userFirebaseReference =
+                        mDatabaseReference.child(userEmail.text.toString())
+
+                if (allEntries != null) {
+                    for (entry in allEntries){
+                        userFirebaseReference.child(entry.SN!!.toString()).setValue(entry)
+                        toast("Data backup request executed.")
+                    }
+                }
             }
 
             R.id.log_out -> {
