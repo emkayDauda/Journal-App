@@ -25,7 +25,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import android.content.Intent
 import android.view.View
+import android.widget.TextView
 import com.alc.askemkay.journalapp.models.RecyclerViewClickListenerInterface
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.journal_entry.view.*
 import org.jetbrains.anko.*
 
@@ -37,7 +40,10 @@ class MainActivity : AppCompatActivity(),
 
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mGoogleApiClient: GoogleApiClient
+    private lateinit var mDatabaseReference: DatabaseReference
 
+    private lateinit var userDisplayName: TextView
+    private lateinit var userEmail: TextView
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -65,6 +71,8 @@ class MainActivity : AppCompatActivity(),
 
         viewManager = LinearLayoutManager(this)
 
+
+
         viewAdapter = JournalAdapter(this)
 
         viewModel = ViewModelProviders.of(this).get(JournalViewModel(application)::class.java)
@@ -74,6 +82,8 @@ class MainActivity : AppCompatActivity(),
                 (viewAdapter as JournalAdapter).setWords(it)
             } else toast("Null data")
         })
+
+        mDatabaseReference = FirebaseDatabase.getInstance().reference
 
         recyclerView = findViewById<RecyclerView>(R.id.my_recycler_view).apply {
             // use this setting to improve performance if you know that changes
@@ -87,6 +97,22 @@ class MainActivity : AppCompatActivity(),
             adapter = viewAdapter
 
         }
+
+        val headerView = findViewById<NavigationView>(R.id.nav_view).getHeaderView(0)
+        userDisplayName = headerView.findViewById(R.id.user_display_name_tv)
+        userEmail = headerView.findViewById(R.id.user_email_tv)
+
+        if (intent.hasExtra("displayName")){
+            if (intent.getStringExtra("displayName").isNotEmpty()){
+                userDisplayName.text = intent.getStringExtra("displayName")
+            }
+        } else userDisplayName.text = ""
+
+        if (intent.hasExtra("email")){
+            if (intent.getStringExtra("email").isNotEmpty()){
+                userEmail.text = intent.getStringExtra("email")
+            }
+        } else userEmail.text = ""
 
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -182,24 +208,32 @@ class MainActivity : AppCompatActivity(),
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_camera -> {
-                // Handle the camera action
-            }
-            R.id.nav_gallery -> {
 
+            R.id.sync_firebase -> {
+                toast("Yet to be implemented")
             }
-            R.id.nav_slideshow -> {
 
-            }
-            R.id.nav_manage -> {
+            R.id.log_out -> {
+                alert {
+                    title = "Sure to sign out?"
+                    message = "You are about to exit the app"
+                    positiveButton("Exit"){
+                        mAuth.signOut()
+                        Auth.GoogleSignInApi.signOut(mGoogleApiClient)
+                        finish()
+                    }
+                    negativeButton("Just Sign Out"){
+                        mAuth.signOut()
+                        Auth.GoogleSignInApi.signOut(mGoogleApiClient)
 
-            }
-            R.id.nav_share -> {
+                        startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                        finish()
+                    }
 
-            }
-            R.id.nav_send -> {
-                mAuth.signOut()
-                Auth.GoogleSignInApi.signOut(mGoogleApiClient)
+                    neutralPressed("Cancel"){
+                        it.dismiss()
+                    }
+                }.show()
             }
         }
 

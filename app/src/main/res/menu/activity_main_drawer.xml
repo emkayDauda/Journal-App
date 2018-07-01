@@ -3,21 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
         <item
             android:id="@+id/sync_firebase"
             android:icon="@drawable/ic_import_export_black_24dp"
             android:title="@string/sync_with_firebase" />
-        />
-    </group>
-
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
+        <item
+            android:id="@+id/log_out"
+            android:icon="@drawable/ic_call_missed_black_24dp"
+            android:title="@string/sign_out" />
 
 </menu>

@@ -5,6 +5,7 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import android.os.Parcelable
 import android.support.annotation.NonNull
+import com.google.firebase.database.IgnoreExtraProperties
 import kotlinx.android.parcel.Parcelize
 import java.sql.Date
 import java.sql.Time
@@ -12,6 +13,7 @@ import java.sql.Time
 // Created by ask_emkay on 6/29/18.
 
 @Parcelize
+@IgnoreExtraProperties
 @Entity (tableName = "entry_table")
 data class JournalEntryModel(@PrimaryKey(autoGenerate = true) @NonNull @ColumnInfo(name = "sn") val SN: Int?,
                              @NonNull @ColumnInfo(name = "date") val date: String,

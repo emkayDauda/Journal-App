@@ -33,6 +33,7 @@
     <string name="emotion_tv" translatable="true">Right now, I\'m feeling:</string>
     <string name="add_new_entry">Add New Entry</string>
     <string name="sync_with_firebase">Sync with Firebase</string>
+    <string name="sign_out">Sign Out And Exit</string>
 
     <string-array name="emotions_array">
         <item>Nothing -_-</item>

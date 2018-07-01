@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.TextInputEditText
 import android.support.v7.app.AppCompatActivity
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -80,13 +81,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 .addOnCompleteListener {
                     mProgressBar.visibility = View.GONE
                     if (it.isSuccessful){
-                        alert {
-                            val toDisplay = mAuth.currentUser?.displayName ?: mAuth.currentUser?.email
-                            message = "User: $toDisplay"
-                        }.show()
+
                         val mainActivityIntent = Intent(this@LoginActivity,
                                 MainActivity::class.java)
+                        mainActivityIntent.putExtra("displayName", mAuth.currentUser?.displayName)
+                        mainActivityIntent.putExtra("email", mAuth.currentUser?.email)
                         startActivity(mainActivityIntent)
+                        finish()
                     } else {
                         alert {
                             message = "Failed: ${it.exception?.message}"
@@ -129,19 +130,21 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success")
                         val user = mAuth.currentUser
-                        Snackbar.make(findViewById(R.id.loginConstraintLayout),
-                                "User: ${user?.displayName}", Snackbar.LENGTH_SHORT).show()
-                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-//                        updateUI(user)
+
+                        val mainActivityIntent = Intent(this@LoginActivity, MainActivity::class.java)
+                        mainActivityIntent.putExtra("displayName", mAuth.currentUser?.displayName)
+                        mainActivityIntent.putExtra("email", mAuth.currentUser?.email)
+
+                        startActivity(mainActivityIntent)
+                        finish()
                     } else {
+
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithCredential:failure", task.exception)
                         Snackbar.make(findViewById(R.id.loginConstraintLayout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
-//                        updateUI(null)
 
                     }
 
-                    // ...
                 }
     }
 
@@ -150,7 +153,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             R.id.signInButton -> {
                 val email = mEmailField.text.toString()
                 val password = mPasswordField.text.toString()
-                signInWithEmailAndPassword(email, password)
+
+                if (TextUtils.isEmpty(mEmailField.text)) mEmailField.error = "This field is required"
+                if (TextUtils.isEmpty(mPasswordField.text)) mPasswordField.error = "This field is required"
+
+                if (email.isNotEmpty() && password.isNotEmpty()){
+                    signInWithEmailAndPassword(email, password)
+                }
             }
 
             R.id.signUpButton -> {

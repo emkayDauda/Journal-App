@@ -67,7 +67,13 @@ class SignUpActivity : AppCompatActivity() {
                                 mProgressBar.visibility = View.GONE
                                 val mainActivityIntent = Intent(this@SignUpActivity,
                                         MainActivity::class.java)
+
+                                mainActivityIntent.putExtra("displayName", mAuth.currentUser?.displayName)
+                                mainActivityIntent.putExtra("email", mAuth.currentUser?.email)
+
                                 startActivity(mainActivityIntent)
+                                finish()
+
                             } else {
                                 alert {
                                     message = "Error: ${it.exception?.message}"
