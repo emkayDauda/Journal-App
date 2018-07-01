@@ -41,16 +41,24 @@ RecyclerView.Adapter<JournalAdapter.ViewHolder>(){
         holder.view.sn_text_view.text = mEntries?.get(position)?.SN?.toString()
     }
 
-    //    Extend A view here?
     class ViewHolder(val view: View, listener: RecyclerViewClickListenerInterface):
-            RecyclerView.ViewHolder(view), View.OnClickListener {
+            RecyclerView.ViewHolder(view), View.OnClickListener, View.OnLongClickListener {
+
 
         private var mListenerInterface = listener
 
-        init { view.setOnClickListener(this) }
+        init {
+            view.setOnClickListener(this)
+            view.setOnLongClickListener(this)
+        }
 
         override fun onClick(v: View) {
             mListenerInterface.onClick(v, adapterPosition)
+        }
+
+        override fun onLongClick(v: View): Boolean {
+            mListenerInterface.onLongClick(v, adapterPosition)
+            return true
         }
     }
 

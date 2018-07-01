@@ -23,18 +23,16 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import org.jetbrains.anko.toast
 import android.content.Intent
 import android.view.View
 import com.alc.askemkay.journalapp.models.RecyclerViewClickListenerInterface
 import kotlinx.android.synthetic.main.journal_entry.view.*
-import org.jetbrains.anko.longToast
-
-
+import org.jetbrains.anko.*
 
 
 class MainActivity : AppCompatActivity(),
         NavigationView.OnNavigationItemSelectedListener, RecyclerViewClickListenerInterface{
+
 
 
     private lateinit var mAuth: FirebaseAuth
@@ -48,7 +46,7 @@ class MainActivity : AppCompatActivity(),
 
     companion object {
         const val NEW_ENTRY_ACTIVITY_REQUEST_CODE = 1
-        const val EDIT_ENTRY_ACTIVITY_REQUEST_CODE = 1
+        const val EDIT_ENTRY_ACTIVITY_REQUEST_CODE = 1234
 
         const val SERIAL_NUMBER_EXTRA = "serialNumber"
 
@@ -123,14 +121,20 @@ class MainActivity : AppCompatActivity(),
         if (requestCode == NEW_ENTRY_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val entry = (data?.getParcelableExtra(AddEntryActivity.EXTRA_REPLY))
                     as JournalEntryModel
+            toast("new entry req")
             viewModel.insert(entry)
         } else if (requestCode == EDIT_ENTRY_ACTIVITY_REQUEST_CODE
                 && resultCode == Activity.RESULT_OK){
+            toast("edit entry req")
             val entry = (data?.getParcelableExtra(AddEntryActivity.EXTRA_REPLY))
                     as JournalEntryModel
 
-            val oldSerialNumber = entry.SN!!.toString()
-            viewModel.deleteEntry(oldSerialNumber)
+
+            if (data.hasExtra(AddEntryActivity.SERIAL_NUMBER_FOR_SELECTED_ENTRY)){
+                val oldSerialNumber =
+                        data.getStringExtra(AddEntryActivity.SERIAL_NUMBER_FOR_SELECTED_ENTRY)
+                viewModel.deleteEntry(oldSerialNumber)
+            }
             viewModel.insert(entry)
         }
 
@@ -201,5 +205,18 @@ class MainActivity : AppCompatActivity(),
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onLongClick(v: View, position: Int) {
+        alert {
+            title = "Confirmation"
+            message = "Would you like to delete this entry?"
+            yesButton {
+                viewModel.deleteEntry(v.sn_text_view.text.toString())
+            }
+            cancelButton{
+                it.dismiss()
+            }
+        }.show()
     }
 }

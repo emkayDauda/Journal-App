@@ -22,6 +22,8 @@ class AddEntryActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_REPLY = "newEntryIsToBeAdded"
+
+        const val SERIAL_NUMBER_FOR_SELECTED_ENTRY = "selectedEntrySerialNumber"
     }
 
 
@@ -70,9 +72,7 @@ class AddEntryActivity : AppCompatActivity() {
 
             val journalEntry = JournalEntryModel(null, currentDate, currentTime, entryBody, currentEmotion)
 
-            if (!previousSerialNumber.text.toString().isEmpty()){
 
-            }
             val replyIntent = Intent()
             if (TextUtils.isEmpty(newEntryEditText.text)) {
                 setResult(Activity.RESULT_CANCELED, replyIntent)
@@ -81,7 +81,14 @@ class AddEntryActivity : AppCompatActivity() {
                 if (oldJournalEntryString == journalEntry.entry) {
                     setResult(Activity.RESULT_CANCELED, replyIntent)
                 }
-                else setResult(Activity.RESULT_OK, replyIntent)
+                else {
+                    setResult(Activity.RESULT_OK, replyIntent)
+                    if (!previousSerialNumber.text.toString().isEmpty()){
+                        replyIntent.putExtra(SERIAL_NUMBER_FOR_SELECTED_ENTRY,
+                                previousSerialNumber.text.toString())
+                    }
+                }
+
             }
             finish()
         }
