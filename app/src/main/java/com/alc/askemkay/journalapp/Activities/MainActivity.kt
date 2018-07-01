@@ -28,9 +28,7 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.alc.askemkay.journalapp.models.RecyclerViewClickListenerInterface
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.journal_entry.view.*
 import org.jetbrains.anko.*
 
@@ -239,6 +237,37 @@ class MainActivity : AppCompatActivity(),
                     })
 
                 }
+            }
+
+            R.id.import_firebase -> {
+                alert {
+                    title = "Warning"
+                    message = "All of your current data will be replaced by data at last sync"
+
+                    positiveButton("OK"){
+                        mProgressBar.visibility = View.VISIBLE
+                        mDatabaseReference.addListenerForSingleValueEvent(object: ValueEventListener{
+                            override fun onCancelled(p0: DatabaseError) {
+                                mProgressBar.visibility = View.GONE
+                            }
+
+                            override fun onDataChange(p0: DataSnapshot) {
+                                mProgressBar.visibility = View.GONE
+                                viewModel.deleteEverything()
+
+                                for (child in p0.children){
+                                    val value = child.getValue(JournalEntryModel::class.java)
+                                    if (value != null) {
+                                        viewModel.insert(entry = value)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                    neutralPressed("Cancel"){
+                        it.dismiss()
+                    }
+                }.show()
             }
 
             R.id.log_out -> {

@@ -7,6 +7,11 @@
             android:id="@+id/sync_firebase"
             android:icon="@drawable/ic_import_export_black_24dp"
             android:title="@string/sync_with_firebase" />
+
+        <item
+            android:id="@+id/import_firebase"
+            android:title="@string/import_from_firebase"
+            android:icon="@drawable/ic_import_export_black_24dp"/>
         <item
             android:id="@+id/log_out"
             android:icon="@drawable/ic_call_missed_black_24dp"

@@ -13,7 +13,7 @@ import java.util.*
 
 // Created by ask_emkay on 6/30/18.
 
-@Database(entities = arrayOf(JournalEntryModel::class), version = 2)
+@Database(entities = arrayOf(JournalEntryModel::class), version = 1)
 abstract class JournalDatabase : RoomDatabase() {
 
     abstract fun entryDao(): EntryDao

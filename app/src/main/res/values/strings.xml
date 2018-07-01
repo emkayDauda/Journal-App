@@ -34,6 +34,7 @@
     <string name="add_new_entry">Add New Entry</string>
     <string name="sync_with_firebase">Export to Firebase</string>
     <string name="sign_out">Sign Out And Exit</string>
+    <string name="import_from_firebase">Import From Firebase</string>
 
     <string-array name="emotions_array">
         <item>Nothing -_-</item>

@@ -2,6 +2,7 @@ package com.alc.askemkay.journalapp.models
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
+import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.PrimaryKey
 import android.os.Parcelable
 import android.support.annotation.NonNull
@@ -16,9 +17,12 @@ import java.sql.Time
 @IgnoreExtraProperties
 @Entity (tableName = "entry_table")
 data class JournalEntryModel(@PrimaryKey(autoGenerate = true) @NonNull @ColumnInfo(name = "sn") val SN: Int?,
-                             @NonNull @ColumnInfo(name = "date") val date: String,
-                             @NonNull @ColumnInfo(name = "time") val time: String,
-                             @NonNull @ColumnInfo(name = "entry") val entry: String,
-                             @NonNull @ColumnInfo(name = "emotion") val emotion: String) : Parcelable {
+                             @NonNull @ColumnInfo(name = "date") val date: String?,
+                             @NonNull @ColumnInfo(name = "time") val time: String?,
+                             @NonNull @ColumnInfo(name = "entry") val entry: String?,
+                             @NonNull @ColumnInfo(name = "emotion") val emotion: String?) : Parcelable {
+
+    @Ignore
+    constructor() : this(null, null, null, null, null)
 
 }
