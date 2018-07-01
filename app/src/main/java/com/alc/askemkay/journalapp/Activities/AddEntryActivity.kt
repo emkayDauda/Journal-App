@@ -13,6 +13,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import com.alc.askemkay.journalapp.R
 import com.alc.askemkay.journalapp.models.JournalEntryModel
+import kotlinx.android.synthetic.main.app_bar_main.*
 import org.jetbrains.anko.toast
 import java.text.SimpleDateFormat
 import java.util.*
@@ -38,6 +39,9 @@ class AddEntryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_entry)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
 
         newEntryEditText = findViewById(R.id.new_entry_edit_text)
 
@@ -102,6 +106,9 @@ class AddEntryActivity : AppCompatActivity() {
                 intent.hasExtra(MainActivity.ENTRY_EMOTION_EXTRA)){
             newEntryEditText.setText(intent.getStringExtra(MainActivity.JOURNAL_ENTRY_EXTRA))
             oldJournalEntryString = newEntryEditText.text.toString()
+            val selectedEmotion = intent.getStringExtra(MainActivity.ENTRY_EMOTION_EXTRA)
+            val emotionPosition = spinnerAdapter.getPosition(selectedEmotion)
+            emotionsSpinner.setSelection(emotionPosition)
             newEntryEditText.isEnabled = false
             toggleFabs()
 

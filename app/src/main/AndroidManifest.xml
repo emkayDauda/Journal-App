@@ -31,7 +31,11 @@
             android:label="@string/sign_up"
             android:parentActivityName=".Activities.LoginActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Activities.AddEntryActivity"></activity>
+        <activity
+            android:name=".Activities.AddEntryActivity"
+            android:label="@string/add_new_entry"
+            android:parentActivityName=".Activities.MainActivity"
+            android:theme="@style/ActionBarPresent"/>
     </application>
 
 </manifest>
